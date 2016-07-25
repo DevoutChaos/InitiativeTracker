@@ -25,11 +25,11 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     //Interface Declarations
-    Button but1, but2, but3, but4, but5;
+    Button but1, but2, but5;
     ListView lstVw1;
     ListViewAdapter lstVwAda;
-    EditText name, init, pasPer;
-    TextView txtName, txtInit, txtPasPer;
+    EditText name, init, pasPer, txtInit;
+    TextView txtName, txtPasPer;
     String[] nameArr;
     Integer[] initArr, pasPerArr;
     private ViewFlipper switcher;
@@ -54,17 +54,16 @@ public class MainActivity extends AppCompatActivity {
         switcher = (ViewFlipper) findViewById(R.id.ViewFlipper);
         but1 = (Button) findViewById(R.id.butAdd);
         but2 = (Button) findViewById(R.id.butSort);
-        but3 = (Button) findViewById(R.id.butUp);
-        but4 = (Button) findViewById(R.id.butDown);
         but5 = (Button) findViewById(R.id.butConfirm);
         txtName = (TextView) findViewById(R.id.txtName);
         txtPasPer = (TextView) findViewById(R.id.txtPasPer);
-        txtInit = (TextView) findViewById(R.id.txtInitiative);
+        txtInit = (EditText) findViewById(R.id.txtInitiative);
         name = (EditText) findViewById(R.id.editName);
         init = (EditText) findViewById(R.id.editInitiative);
         pasPer = (EditText) findViewById(R.id.editPasPer);
         lstVw1 = (ListView) findViewById(R.id.mainListView);
 
+        //Switch to Add Combatant screen
         but1.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Return to Initiative Order - adding the combatant in the process.
         but5.setOnClickListener(new View.OnClickListener()
         {
             @Override
