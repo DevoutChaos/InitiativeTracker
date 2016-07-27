@@ -1,11 +1,14 @@
 package devoutchaos.initiativetracker;
 
 import java.lang.Object;
+import java.util.ArrayList;
 
 import android.app.Activity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,23 +19,33 @@ import android.widget.Button;
 
 public class ListViewAdapter extends BaseAdapter{
 
-    Activity context;
-    String name[], tempName[];
-    Integer pasPer[], tempPasPer[];
-    Integer init[], tempInit[];
-    int posPlus, posMinus;
+    /*** Declarations (UI) ***/
     Button but3, but4;
-    boolean plus, minus;
-    String thisName, thatName;
-    int thisInit, thatInit, thisPer, thatPer;
 
-    public ListViewAdapter(Activity context, String[] name, Integer[] pasPer, Integer[] init)
+    /*** Declarations (Lists) ***/
+    public static ArrayList<String> nameLst = new ArrayList<>();
+    public static ArrayList<Integer> initLst = new ArrayList<>();
+    public static ArrayList<Integer> pasPerLst = new ArrayList<>();
+
+    /*** Declarations (Variables) ***/
+    Activity context;
+    String name[];
+    Integer pasPer[];
+    Integer init[];
+    int posPlus, posMinus;
+    boolean plus, minus;
+
+    /*** Get and Set passed values ***/
+    public ListViewAdapter(Activity context, String[] name, Integer[] pasPer, Integer[] init, ArrayList<String> nameLst, ArrayList<Integer> initLst, ArrayList<Integer> pasPerLst)
     {
         super();
         this.context = context;
         this.name = name;
         this.pasPer = pasPer;
         this.init = init;
+        this.nameLst = nameLst;
+        this.initLst = initLst;
+        this.pasPerLst = pasPerLst;
     }
 
     public int getCount()
@@ -48,18 +61,21 @@ public class ListViewAdapter extends BaseAdapter{
         return 0;
     }
 
+
     private class ViewHolder
     {
-        TextView txtName;
-        TextView txtPasPer;
+        /*** Declarations (UI) ***/
+        TextView txtName, txtPasPer;
         EditText txtInitiative;
     }
 
+    /*** Handles Display ***/
     public View getView(final int position, View convertView, ViewGroup parent)
     {
         final ViewHolder holder;
         LayoutInflater inflater = context.getLayoutInflater();
 
+        /*** Sets up all UI components ***/
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.row, null);
             holder = new ViewHolder();
@@ -74,45 +90,36 @@ public class ListViewAdapter extends BaseAdapter{
         but3 = (Button) convertView.findViewById(R.id.butUp);
         but4 = (Button) convertView.findViewById(R.id.butDown);
 
-        //Move item up by one
+        /*** Move item up by one ***/
         but3.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //do something
                 posMinus = position-1;
-
                 if (position > 0)
                 {
                     minus = true;
-
                     SwitcherooMinus(position, posMinus);
-
                     ActualAdd(holder, position);
                 }
                 notifyDataSetChanged();
             }
         });
 
-        //Move item down by one
+        /*** Move item down by one ***/
         but4.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //do something
                 posPlus = (position+1);
                 if (position != (name.length - 1))
                 {
                     plus = true;
-
                     SwitcherooPlus(position, posPlus);
-
                     ActualAdd(holder, position);
                 }
                 notifyDataSetChanged();
             }
         });
-
         ActualAdd(holder, position);
-
         return convertView;
     }
 
@@ -121,8 +128,6 @@ public class ListViewAdapter extends BaseAdapter{
         holder.txtName.setText(name[position]);
         holder.txtPasPer.setText(pasPer[position].toString());
         holder.txtInitiative.setText(init[position].toString());
-
-
          if (minus)
          {
              holder.txtName.setText(name[posMinus]);

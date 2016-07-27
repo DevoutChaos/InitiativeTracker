@@ -94,7 +94,8 @@
             android:layout_toRightOf="@+id/txtName"
             android:layout_alignParentRight="true"
             android:layout_alignEnd="@+id/txtPasPer"
-            android:paddingTop="5dp"/>
+            android:paddingTop="5dp"
+            android:maxLength="25"/>
 
         <EditText
             android:id="@+id/editPasPer"
@@ -105,7 +106,11 @@
             android:layout_alignParentRight="true"
             android:layout_alignEnd="@+id/txtPasPer"
             android:paddingTop="5dp"
-            android:layout_alignStart="@+id/editName" />
+            android:layout_alignStart="@+id/editName"
+            android:text="10"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="2"/>
 
         <EditText
             android:id="@+id/editInitiative"
@@ -116,7 +121,11 @@
             android:layout_alignParentRight="true"
             android:layout_alignEnd="@+id/txtPasPer"
             android:paddingTop="5dp"
-            android:layout_alignStart="@+id/editName" />
+            android:layout_alignStart="@+id/editName"
+            android:text="1"
+            android:inputType="number"
+            android:digits="0123456789"
+            android:maxLength="2"/>
 
         <Button
             android:id="@+id/butConfirm"
