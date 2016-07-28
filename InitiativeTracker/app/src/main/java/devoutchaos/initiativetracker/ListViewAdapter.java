@@ -20,7 +20,7 @@ import android.widget.Button;
 public class ListViewAdapter extends BaseAdapter{
 
     /*** Declarations (UI) ***/
-    Button but3, but4;
+    Button but3, but4, but7;
 
     /*** Declarations (Lists) ***/
     public static ArrayList<String> nameLst = new ArrayList<>();
@@ -89,6 +89,7 @@ public class ListViewAdapter extends BaseAdapter{
 
         but3 = (Button) convertView.findViewById(R.id.butUp);
         but4 = (Button) convertView.findViewById(R.id.butDown);
+        but7 = (Button) convertView.findViewById(R.id.butDelete);
 
         /*** Move item up by one ***/
         but3.setOnClickListener(new View.OnClickListener(){
@@ -119,6 +120,15 @@ public class ListViewAdapter extends BaseAdapter{
                 notifyDataSetChanged();
             }
         });
+
+        but7.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                DeleteCombatant(position);
+                notifyDataSetChanged();
+            }
+        });
+
         ActualAdd(holder, position);
         return convertView;
     }
@@ -176,5 +186,20 @@ public class ListViewAdapter extends BaseAdapter{
         temp3 = pasPer[position];
         pasPer[position] = pasPer[posPlus];
         pasPer[posPlus] = temp3;
+    }
+
+    public void DeleteCombatant(int position)
+    {
+        nameLst.remove(position);
+        initLst.remove(position);
+        pasPerLst.remove(position);
+
+        name = nameLst.toArray(new String[0]);
+        init = initLst.toArray(new Integer[0]);
+        pasPer = pasPerLst.toArray(new Integer[0]);
+
+        MainActivity.nameArr = name;
+        MainActivity.initArr = init;
+        MainActivity.pasPerArr = pasPer;
     }
 }

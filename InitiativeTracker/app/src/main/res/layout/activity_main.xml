@@ -44,7 +44,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtPasPer1"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/butSort" />
 
         <TextView
             android:id="@+id/txtName1"
@@ -64,9 +65,8 @@
             android:textSize="24sp"
             android:paddingTop="5dp"
             android:paddingLeft="5dp"
-            android:layout_alignBaseline="@+id/txtInitiative1"
-            android:layout_alignBottom="@+id/txtInitiative1"
-            android:layout_alignEnd="@+id/textView0" />
+            android:layout_below="@+id/textView0"
+            android:layout_toStartOf="@+id/butSort" />
 
         <TextView
             android:id="@+id/txtInitiative1"
@@ -75,7 +75,8 @@
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:paddingTop="5dp"
-            android:layout_below="@+id/textView0"
+            android:paddingRight="120dp"
+            android:layout_above="@+id/mainListView"
             android:layout_toStartOf="@+id/butAdd" />
     </RelativeLayout>
 
@@ -134,6 +135,14 @@
             android:text="Add Combatant"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true" />
+
+        <Button
+            android:id="@+id/butCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/butConfirm" />
 
         <TextView
             android:id="@+id/textInitiative"

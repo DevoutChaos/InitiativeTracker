@@ -13,11 +13,12 @@ import android.widget.ViewFlipper;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
     /*** Declarations (UI) ***/
-    Button but1, but2, but5;
+    Button but1, but2, but5, but6;
     ListView lstVw1;
     ListViewAdapter lstVwAda;
     EditText name, init, pasPer, txtInit;
@@ -28,10 +29,15 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> nameLst = new ArrayList<>();
     public ArrayList<Integer> initLst = new ArrayList<>();
     public ArrayList<Integer> pasPerLst = new ArrayList<>();
+    public ArrayList<String> tempNameLst = new ArrayList<>();
+    public ArrayList<Integer> tempInitLst = new ArrayList<>();
+    public ArrayList<Integer> tempPasPerLst = new ArrayList<>();
+
 
     /*** Declarations (Variables) ***/
-    String[] nameArr;
-    Integer[] initArr, pasPerArr;
+    static String[] nameArr;
+    String[] tempNameArr;
+    static Integer[] initArr, pasPerArr, tempInitArr, tempPasPerArr;
     int count;
     private String tempName;
     private Integer tempInit, tempPasPer;
@@ -52,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         but1 = (Button) findViewById(R.id.butAdd);
         but2 = (Button) findViewById(R.id.butSort);
         but5 = (Button) findViewById(R.id.butConfirm);
+        but6 = (Button) findViewById(R.id.butCancel);
         txtName = (TextView) findViewById(R.id.txtName);
         txtPasPer = (TextView) findViewById(R.id.txtPasPer);
         txtInit = (EditText) findViewById(R.id.txtInitiative);
@@ -71,6 +78,18 @@ public class MainActivity extends AppCompatActivity {
                     ArraysToList();
                 }
                 switcher.showNext();
+            }
+        });
+
+        /*** Sort all combatants by Initiative (High -> Low) ***/
+        but2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (count > 1) {
+                    SortEverything();
+                }
             }
         });
 
@@ -99,7 +118,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        /*** Return to main view without adding a combatant ***/
+        but6.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                switcher.showPrevious();
+            }
+        });
     }
+
+
 
     /*** Resets input fields ***/
     public void ClearInputs()
@@ -126,10 +157,6 @@ public class MainActivity extends AppCompatActivity {
         nameArr = nameLst.toArray(new String[0]);
         initArr = initLst.toArray(new Integer[0]);
         pasPerArr = pasPerLst.toArray(new Integer[0]);
-
-        /*** Gets number of entries ***/
-        count = nameArr.length;
-
     }
 
     /*** Passes arrays into ListViewAdapter ***/
@@ -138,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
         lstVwAda = new ListViewAdapter(this, nameArr, pasPerArr, initArr, nameLst, initLst, pasPerLst);
         lstVw1.setAdapter(lstVwAda);
 
+        /*** Gets number of entries ***/
+        count = nameArr.length;
+
         /*** Displays number of entries ***/
         Toast.makeText(this, "Combatants present: " + count, Toast.LENGTH_SHORT).show();
     }
@@ -145,6 +175,10 @@ public class MainActivity extends AppCompatActivity {
     /*** Overwrites lists with Array data ***/
     public void ArraysToList()
     {
+        nameLst.clear();
+        initLst.clear();
+        pasPerLst.clear();
+
         nameLst = new ArrayList(Arrays.asList(nameArr));
         initLst = new ArrayList(Arrays.asList(initArr));
         pasPerLst= new ArrayList(Arrays.asList(pasPerArr));
@@ -166,5 +200,49 @@ public class MainActivity extends AppCompatActivity {
     public void MissingPasPer()
     {
         Toast.makeText(this, "Please fill in the 'Passive Perception' section", Toast.LENGTH_SHORT).show();
+    }
+
+    public void SortEverything()
+    {
+        tempNameArr = Arrays.copyOf(nameArr, nameArr.length);
+        tempInitArr = Arrays.copyOf(initArr, initArr.length);
+        tempPasPerArr = Arrays.copyOf(pasPerArr, pasPerArr.length);
+
+        Arrays.sort(tempInitArr, Collections.<Integer>reverseOrder());
+
+        tempNameLst.clear();
+        tempInitLst.clear();
+        tempPasPerLst.clear();
+
+        int len1, len2;
+
+        len1 = tempInitArr.length;
+        len2 = initLst.size();
+
+        for (int i = 0; i < len1; i++)
+        {
+            for (int x = 0; x < len2; x++)
+            {
+                if (initLst.get(x) == tempInitArr[i])
+                {
+                    tempNameLst.add(nameLst.get(x));
+                    tempPasPerLst.add(pasPerLst.get(x));
+
+                    initLst.remove(x);
+                    nameLst.remove(x);
+                    pasPerLst.remove(x);
+
+                    len1 = tempInitArr.length;
+                    len2 = initLst.size();
+                }
+            }
+        }
+
+        nameArr = tempNameLst.toArray(new String[0]);
+        pasPerArr = tempPasPerLst.toArray(new Integer[0]);
+        initArr = Arrays.copyOf(tempInitArr, tempInitArr.length);
+
+        ArraysToList();
+        AddToArrays();
     }
 }
